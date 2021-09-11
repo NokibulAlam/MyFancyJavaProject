@@ -1,76 +1,35 @@
 package creational.pattern;
 
-abstract class AbstractFactory
-{
-	abstract Shape getShape(String type);
-	abstract Color getColor(String type);
+class DbConnection{
+
+    private static DbConnection instance=null;
+
+    private DbConnection(String dbUser,String dbPassword,String dbName ) { 
+    	SQLConnection connection = new SQLConnection(dbUser, dbPassword, dbName);
+   }
+
+
+	public static DbConnection getDbConnection(String dbUser,String dbPassword,String dbName) {
+      if (instance== null ) 
+		instance = new DbConnection(dbUser,dbPassword,dbName) ;                           
+
+      return instance;
+    }
+}
+
+class SQLConnection {
 	
-}
-
-
-interface Shape
-{
-	void draw();
-}
-
-
-class Circle implements Shape
-{
-	 @Override
-	 public void draw()
-	 {
-		 System.out.println("a circle drawn");
-	 }
-}
-
-
-class Square implements Shape
-{
-	 @Override
-	 public void draw()
-	 {
-		 System.out.println("a square drawn");
-	 }
-}
-
-class PaintFactory extends AbstractFactory
-{
-	@Override
-	 public Shape getShape(String type)
-	 {
-		 switch (type)
-		 {
-			 case "Circle":
-				 return new Circle();
-			 case "Square":
-				 return new Square();
-			 default:
-				 System.out.println( "Shape type : "+type+" cannot be instantiated");
-				 return null;
-		 }
-	 }
-
-	@Override
-	public Color getColor(String type)
-	 {
-		 switch (type)
-		 {
-			 case "Red":
-				 return new Red();
-			 case "Green":
-				 return new Green();
-			 default:
-				 System.out.println( "Color name : "+type+" cannot be instantiated");
-				 return null;
-		 }
-	 }
-}
-
-
-interface Color
-{
-	void fill();
-}
+	String dbUser;
+	String dbPassword;
+	String dbName;
+	
+	public SQLConnection(String dbUser, String dbPassword, String dbName) {
+		super();
+		this.dbUser = dbUser;
+		this.dbPassword = dbPassword;
+		this.dbName = dbName;
+	}
+	
 
 
 class Green implements Color
@@ -82,62 +41,17 @@ class Green implements Color
 	 }
 }
 
-class AnimationFactory extends AbstractFactory
-{
-	 @Override
-	 public Color getColor(String type)
-	 {
-		 switch (type)
-		 {
-			 case "Red":
-				 return new Red();
-			 case "Green":
-				 return new Green();
-			 default:
-				 System.out.println( "Color name : "+type+" cannot be instantiated");
-				 return null;
-		 }
-	 }
 
-	@Override
-	 public Shape getShape(String type)
-	 {
-		 switch (type)
-		 {
-			 case "Circle":
-				 return new Circle();
-			 case "Square":
-				 return new Square();
-			 default:
-				 System.out.println( "Shape type : "+type+" cannot be instantiated");
-				 return null;
-		 }
-	 }
-}
+class Test
 
-class FactoryProducer
-{
-	public static AbstractFactory getFactory(String name) {
-		if(name.equalsIgnoreCase("paint"))
-			return new PaintFactory();
-		else if(name.equalsIgnoreCase("animation"))
-			return new AnimationFactory();
-		return null;
-	}
-}
-
-
-class Arts
 {
 	 public static void main(String[] args) throws Exception
 	 {
-		 
-		 AbstractFactory paintFactory = FactoryProducer.getFactory("Paint");
-		 Shape circle=paintFactory.getShape("Circle");
-		 circle.draw();
-		 
-		 AbstractFactory animationFactory = FactoryProducer.getFactory("Animation");
-		 Color red=animationFactory.getColor("Red");
-		 red.fill();
+		 String dbUser="admin";
+		 String dbPassword="admin";
+		 String dbName="tesDb";
+		 DbConnection connection=DbConnection.getDbConnection(dbUser, dbPassword, dbName);
 	 }
 }
+
+
