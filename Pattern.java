@@ -73,16 +73,6 @@ interface Color
 }
 
 
-class Red implements Color
-{
-	 @Override
-	 public void fill()
-	 {
-		 System.out.println("Red color filled");
-	 }
-}
-
-
 class Green implements Color
 {
 	 @Override
